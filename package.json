@@ -1,0 +1,21 @@
+{
+  "name": "movementswap-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "demo": "ts-node src/demo.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  },
+  "dependencies": {
+    "@aptos-labs/ts-sdk": "^1.22.2",
+    "dotenv": "^16.4.5"
+  }
+}

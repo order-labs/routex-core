@@ -1,0 +1,7 @@
+*/build/
+.movement aptos
+
+.aptos/
+node_modules/
+.env
+.env*
