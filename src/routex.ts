@@ -179,20 +179,23 @@ export class Routex {
     return coinsOut;
   }
 
-  async getCoinBalance(coinType: string, accountAddress: string): Promise<bigint> {
-    console.dir({ coinType, accountAddress }, { depth: null })
+  async getCoinBalance(
+    coinType: string,
+    accountAddress: string,
+  ): Promise<bigint> {
+    console.dir({ coinType, accountAddress }, { depth: null });
     try {
       const res = await this.aptos.view({
         payload: {
           function: `0x1::coin::balance`,
           functionArguments: [accountAddress],
           typeArguments: [coinType],
-        }
+        },
       });
       console.dir({ res }, { depth: null });
       return BigInt(parseInt(res[0] as string));
     } catch (e) {
-      console.log(`error: ${e}`)
+      console.log(`error: ${e}`);
       return BigInt(0);
     }
   }
@@ -302,7 +305,7 @@ export class Routex {
         ...routing.routers.map((router) => router.to),
       ],
     };
-    console.dir({data}, {depth: null});
+    console.dir({ data }, { depth: null });
     const res = await this.aptos.transaction.build.simple({
       sender: signer.accountAddress,
       data,

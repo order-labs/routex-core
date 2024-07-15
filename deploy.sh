@@ -4,7 +4,7 @@ set -x
 
 # FULLNODE="http://127.0.0.1:8080"
 # FAUCET="http://127.0.0.1:8081"
-#FULLNODE="https://fullnode.devnet.aptoslabs.com"
+#FULLNODE="https://fullnode.devnet.aptoslabs.com/v1"
 #FAUCET="https://faucet.devnet.aptoslabs.com"
 FULLNODE="https://aptos.testnet.suzuka.movementlabs.xyz/v1"
 FAUCET="https://faucet.testnet.suzuka.movementlabs.xyz/"
@@ -66,6 +66,7 @@ add_or_update_env "SWAP_DEPLOYER" $SwapDeployer
 add_or_update_env "RESOURCE_ACCOUNT_DEPLOYER" $ResourceAccountDeployer
 add_or_update_env "RESOURCE_ACCOUNT_DEPLOYER2" $ResourceAccountDeployer2
 add_or_update_env "PRIVATE_KEY" $PrivateKey
+add_or_update_env "USER_PRIVATE_KEY" $PrivateKey
 add_or_update_env "FULLNODE" $FULLNODE
 add_or_update_env "FAUCET" $FAUCET
 

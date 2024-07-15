@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "demo": "ts-node src/demo.ts"
+    "demo": "ts-node src/demo.ts",
+    "events": "ts-node src/events.ts"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
   },
   "dependencies": {
     "@aptos-labs/ts-sdk": "^1.22.2",
+    "axios": "^1.7.2",
     "dotenv": "^16.4.5"
   }
 }
