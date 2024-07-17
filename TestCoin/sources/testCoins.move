@@ -16,6 +16,8 @@ module SwapDeployer::TestCoinsV1 {
 
     struct USDC {}
 
+    struct RTX {}
+
     /// Storing mint/burn capabilities for `USDT` and `BTC` coins under user account.
     struct Caps<phantom CoinType> has key {
         mint: MintCapability<CoinType>,
@@ -37,10 +39,14 @@ module SwapDeployer::TestCoinsV1 {
         let (usdc_b, usdc_f, usdc_m) =
             coin::initialize<USDC>(admin,
                 utf8(b"USD Coin"), utf8(b"USDC"), 8, true);
+        let (rtx_b, rtx_f, rtx_m) =
+            coin::initialize<RTX>(admin,
+                utf8(b"Routex Token"), utf8(b"RTX"), 8, true);
         move_to(admin, Caps<BTC> { mint: btc_m, freeze: btc_f, burn: btc_b });
         move_to(admin, Caps<USDT> { mint: usdt_m, freeze: usdt_f, burn: usdt_b });
         move_to(admin, Caps<ETH> { mint: eth_m, freeze: eth_f, burn: eth_b });
         move_to(admin, Caps<USDC> { mint: usdc_m, freeze: usdc_f, burn: usdc_b });
+        move_to(admin, Caps<RTX> { mint: rtx_m, freeze: rtx_f, burn: rtx_b });
         register_coins_all(admin);
     }
 
@@ -58,6 +64,9 @@ module SwapDeployer::TestCoinsV1 {
         };
         if(!coin::is_account_registered<USDC>(account_addr)) {
             coin::register<USDC>(account);
+        };
+        if(!coin::is_account_registered<RTX>(account_addr)) {
+            coin::register<RTX>(account);
         };
     }
 

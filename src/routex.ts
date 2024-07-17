@@ -98,6 +98,18 @@ export class Routex {
         type_: `${this.routexAddress}::TestCoinsV1::USDC`,
         decimal: 8,
       },
+      {
+        symbol: "RTX",
+        logo: "https://i.imgur.com/rgYOokU.png",
+        type_: `${this.routexAddress}::TestCoinsV1::RTX`,
+        decimal: 8,
+      },
+      {
+        symbol: "MOVE",
+        logo: "https://explorer.testnet.suzuka.movementlabs.xyz/logo.png",
+        type_: `0x1::aptos_coin::AptosCoin`,
+        decimal: 8,
+      },
     ];
     this.swaps = {
       1: {
@@ -152,19 +164,28 @@ export class Routex {
         `coinIn.type_ ${coinIn.type_} is not equal to router.from ${router.from}`,
       );
     }
-    const res = await this.aptos.view({
-      payload: {
-        function: `${this.routexAddress}::RoutexV1::get_amounts_out`,
-        functionArguments: [router.swap_id, coinIn.amount],
-        typeArguments: [router.from, router.to],
-      },
-    });
-    // console.dir({ res, coinIn, router }, { depth: null })
-    return {
-      type_: router.to,
-      amount: BigInt(parseInt(res[0] as string)),
-      routers: [...coinIn.routers, router],
-    };
+    try {
+      const res = await this.aptos.view({
+        payload: {
+          function: `${this.routexAddress}::RoutexV1::get_amounts_out`,
+          functionArguments: [router.swap_id, coinIn.amount],
+          typeArguments: [router.from, router.to],
+        },
+      });
+      // console.dir({ res, coinIn, router }, { depth: null })
+      return {
+        type_: router.to,
+        amount: BigInt(parseInt(res[0] as string)),
+        routers: [...coinIn.routers, router],
+      };
+    } catch (e) {
+      console.log(`get coinOut, ${{coinIn, router}} error: ${e}`);
+      return {
+        type_: router.to,
+        amount: BigInt(0),
+        routers: [...coinIn.routers, router],
+      };
+    }
   }
 
   async getCoinsOut(coinIn: InternalCoin): Promise<InternalCoin[]> {

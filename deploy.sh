@@ -4,10 +4,10 @@ set -x
 
 # FULLNODE="http://127.0.0.1:8080"
 # FAUCET="http://127.0.0.1:8081"
-#FULLNODE="https://fullnode.devnet.aptoslabs.com/v1"
-#FAUCET="https://faucet.devnet.aptoslabs.com"
-FULLNODE="https://aptos.testnet.suzuka.movementlabs.xyz/v1"
-FAUCET="https://faucet.testnet.suzuka.movementlabs.xyz/"
+FULLNODE="https://fullnode.devnet.aptoslabs.com/v1"
+FAUCET="https://faucet.devnet.aptoslabs.com"
+#FULLNODE="https://aptos.testnet.suzuka.movementlabs.xyz/v1"
+#FAUCET="https://faucet.testnet.suzuka.movementlabs.xyz/"
 PATH_TO_REPO="."
 
 # Initializes an account if keys are not present
@@ -119,6 +119,9 @@ aptos move run --function-id ${SwapDeployer}::TestCoinsV1::mint_coin \
 --type-args ${SwapDeployer}::TestCoinsV1::USDT --assume-yes
 aptos move run --function-id ${SwapDeployer}::TestCoinsV1::mint_coin \
 --args address:${SwapDeployer} u64:200000000000000000 \
+--type-args ${SwapDeployer}::TestCoinsV1::RTX --assume-yes
+aptos move run --function-id ${SwapDeployer}::TestCoinsV1::mint_coin \
+--args address:${SwapDeployer} u64:200000000000000000 \
 --type-args ${SwapDeployer}::TestCoinsV1::USDC --assume-yes
 echo "Mint BTC TestCoinsV1"
 aptos move run --function-id ${SwapDeployer}::TestCoinsV1::mint_coin \
@@ -134,6 +137,14 @@ echo "add BTC:USDT pair, 100 BTC, price 70000"
 aptos move run --function-id ${SwapDeployer}::AnimeSwapPoolV1::add_liquidity_entry \
 --args u64:10000000000 u64:700000000000000 u64:1 u64:1 \
 --type-args ${SwapDeployer}::TestCoinsV1::BTC ${SwapDeployer}::TestCoinsV1::USDT --assume-yes
+echo "add RTX:USDT pair, 100 RTX, price 100"
+aptos move run --function-id ${SwapDeployer}::AnimeSwapPoolV1::add_liquidity_entry \
+--args u64:10000000000 u64:1000000000000 u64:1 u64:1 \
+--type-args ${SwapDeployer}::TestCoinsV1::RTX ${SwapDeployer}::TestCoinsV1::USDT --assume-yes
+echo "add RTX:MOVE pair, 100 RTX, 0.1 MOVE"
+aptos move run --function-id ${SwapDeployer}::AnimeSwapPoolV1::add_liquidity_entry \
+--args u64:10000000000 u64:10000000 u64:1 u64:1 \
+--type-args ${SwapDeployer}::TestCoinsV1::RTX 0x1::aptos_coin::AptosCoin --assume-yes
 echo "add BTC:USDC pair, 100 BTC, price 72000"
 aptos move run --function-id ${SwapDeployer}::AnimeSwapPoolV1::add_liquidity_entry \
 --args u64:10000000000 u64:720000000000000 u64:1 u64:1 \
@@ -159,6 +170,10 @@ echo "add BTC:USDT pair, 1 BTC, price 71000"
 aptos move run --function-id ${SwapDeployer}::AnimeSwapPoolV2::add_liquidity_entry \
 --args u64:100000000 u64:7100000000000 u64:1 u64:1 \
 --type-args ${SwapDeployer}::TestCoinsV1::BTC ${SwapDeployer}::TestCoinsV1::USDT --assume-yes
+echo "add RTX:USDT pair, 100 RTX, price 101"
+aptos move run --function-id ${SwapDeployer}::AnimeSwapPoolV2::add_liquidity_entry \
+--args u64:10000000000 u64:1010000000000 u64:1 u64:1 \
+--type-args ${SwapDeployer}::TestCoinsV1::RTX ${SwapDeployer}::TestCoinsV1::USDT --assume-yes
 echo "add BTC:USDC pair, 1 BTC, price 70000"
 aptos move run --function-id ${SwapDeployer}::AnimeSwapPoolV2::add_liquidity_entry \
 --args u64:100000000 u64:7000000000000 u64:1 u64:1 \
@@ -185,6 +200,9 @@ echo "Create USDT FaucetV1"
 aptos move run --function-id ${SwapDeployer}::FaucetV1::create_faucet \
 --args u64:10000000000000000 u64:1000000000 u64:3600 \
 --type-args ${SwapDeployer}::TestCoinsV1::USDT --assume-yes
+aptos move run --function-id ${SwapDeployer}::FaucetV1::create_faucet \
+--args u64:10000000000000000 u64:1000000000 u64:3600 \
+--type-args ${SwapDeployer}::TestCoinsV1::RTX --assume-yes
 aptos move run --function-id ${SwapDeployer}::FaucetV1::create_faucet \
 --args u64:10000000000000000 u64:1000000000 u64:3600 \
 --type-args ${SwapDeployer}::TestCoinsV1::USDC --assume-yes
