@@ -13,7 +13,7 @@ FULLNODE=https://aptos.testnet.suzuka.movementlabs.xyz/v1
 FAUCET=https://faucet.testnet.suzuka.movementlabs.xyz/
 ```
 
-The module address is `0x034a6b320636cf204d0665a5cc5499fc56250ceaa90a766b843c532ba7ff284d`.
+The module address is `0x36fb4758ac5e5dbc78f8b1a1801e163c819f54be4c9c375ad0e33d8ffe968705`.
 
 ## Development
 
