@@ -106,7 +106,7 @@ export class Routex {
       },
       {
         symbol: "MOVE",
-        logo: "https://explorer.testnet.suzuka.movementlabs.xyz/logo.png",
+        logo: "https://i.imgur.com/Ds1sl3Q.png",
         type_: `0x1::aptos_coin::AptosCoin`,
         decimal: 8,
       },

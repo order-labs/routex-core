@@ -68,6 +68,7 @@ async function main() {
   const usdt = `${routexAddress}::TestCoinsV1::USDT`;
   const usdc = `${routexAddress}::TestCoinsV1::USDC`;
   const rtx = `${routexAddress}::TestCoinsV1::RTX`;
+  const move = `0x1::aptos_coin::AptosCoin`;
   // // get token balance
   const btcBalance = await routex.getCoinBalance(btc, user.accountAddress.toString());
   const usdtBalance = await routex.getCoinBalance(usdt, user.accountAddress.toString());
@@ -81,8 +82,9 @@ async function main() {
   // 0.1 BTC -> USDT
   const startTime = Date.now();
   // const routing = await routex.getRouting(btc, rtx, 10000n);
-  const routing = await routex.getRouting(btc, usdt, 10000n);
-  // const routing = await routex.getRouting(usdt, usdc, 10000000n);
+  // const routing = await routex.getRouting(btc, usdt, 10000n);
+  const routing = await routex.getRouting(usdt, eth, 10000n);
+  // const routing = await routex.getRouting(move, usdt, 10000n);
   const endTime = Date.now();
   console.dir({ routing }, { depth: null });
   console.log(`Routing from BTC to USDT: ${endTime - startTime} ms`);

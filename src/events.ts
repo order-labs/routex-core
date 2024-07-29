@@ -15,7 +15,7 @@ dotenv.config();
 
 const ENDPOINT = "https://aptos.testnet.suzuka.movementlabs.xyz/v1";
 const ROUTEX_ADDR =
-  "0xc54fea735a2ad200c712d193a42cd7d575baf7a64487479d4cc71bb47d41a988";
+  "0x36fb4758ac5e5dbc78f8b1a1801e163c819f54be4c9c375ad0e33d8ffe968705";
 
 async function galxeTasks(address: string) {
   let btcFaucetTaskFinished = false;
@@ -54,16 +54,41 @@ async function galxeTasks(address: string) {
   });
   console.dir({ data: swapUsdtTaskRes.data }, { depth: null });
   swapUsdtTaskFinished = swapUsdtTaskRes.data[0];
+  // check swap RTX task
+  const swapRtxTaskRes = await axios.post(`${ENDPOINT}/view`, {
+    "function": `${ROUTEX_ADDR}::RoutexV1::check_user_record`,
+    "type_arguments": [],
+    "arguments": [
+      address,
+      "525458",
+    ],
+  });
+  console.dir({ data: swapRtxTaskRes.data }, { depth: null });
+  const swapRtxTaskFinished = swapRtxTaskRes.data[0];
+  // check swap MOVE task
+  const swapMoveTaskRes = await axios.post(`${ENDPOINT}/view`, {
+    "function": `${ROUTEX_ADDR}::RoutexV1::check_user_record`,
+    "type_arguments": [],
+    "arguments": [
+      address,
+      "4d4f5645",
+    ],
+  });
+  console.dir({ data: swapMoveTaskRes.data }, { depth: null });
+  const swapMoveTaskFinished = swapMoveTaskRes.data[0];
+
   return {
     btcFaucetTaskFinished,
     swapBtcTaskFinished,
     swapUsdtTaskFinished,
+    swapRtxTaskFinished,
+    swapMoveTaskFinished,
   };
 }
 
 async function main() {
   console.log(`--------- evetns demo --------`);
-  const addr = '0xac6032d57e18604bcfa0717c07723de7ba3a4fb1dd3850aa612edfaa1b7617c0';
+  const addr = '0x36fb4758ac5e5dbc78f8b1a1801e163c819f54be4c9c375ad0e33d8ffe968705';
   // const addr = "0xac6032d57e18604bcfa0717c07723de7ba3a4fb1dd3850aa612edfaa1b7617c1";
   const result = await galxeTasks(addr);
   console.dir({ result }, { depth: null });

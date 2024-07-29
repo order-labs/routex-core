@@ -4,10 +4,10 @@ set -x
 
 # FULLNODE="http://127.0.0.1:8080"
 # FAUCET="http://127.0.0.1:8081"
-FULLNODE="https://fullnode.devnet.aptoslabs.com/v1"
-FAUCET="https://faucet.devnet.aptoslabs.com"
-#FULLNODE="https://aptos.testnet.suzuka.movementlabs.xyz/v1"
-#FAUCET="https://faucet.testnet.suzuka.movementlabs.xyz/"
+#FULLNODE="https://fullnode.devnet.aptoslabs.com/v1"
+#FAUCET="https://faucet.devnet.aptoslabs.com"
+FULLNODE="https://aptos.testnet.suzuka.movementlabs.xyz/v1"
+FAUCET="https://faucet.testnet.suzuka.movementlabs.xyz"
 PATH_TO_REPO="."
 
 # Initializes an account if keys are not present

@@ -30,12 +30,16 @@ module Routex::RoutexV1 {
     struct RoutexStore has key, store {
         btc_users: SmartTable<address, bool>,
         usdt_users: SmartTable<address, bool>,
+        rtx_users: SmartTable<address, bool>,
+        move_users: SmartTable<address, bool>,
     }
 
     fun init_module(account: &signer) {
         let store = RoutexStore {
             btc_users: smart_table::new(),
             usdt_users: smart_table::new(),
+            rtx_users: smart_table::new(),
+            move_users: smart_table::new(),
         };
         move_to(account, store);
     }
@@ -47,6 +51,10 @@ module Routex::RoutexV1 {
             smart_table::upsert(&mut store.btc_users, account, true)
         } else if (token_struct_name == b"USDT") {
             smart_table::upsert(&mut store.usdt_users, account, true)
+        } else if (token_struct_name == b"RTX") {
+            smart_table::upsert(&mut store.rtx_users, account, true)
+        } else if (token_struct_name == b"AptosCoin") {
+            smart_table::upsert(&mut store.move_users, account, true)
         }
     }
 
@@ -57,6 +65,10 @@ module Routex::RoutexV1 {
             *smart_table::borrow_with_default(&store.btc_users, account, &false)
         } else if (token == b"USDT") {
             *smart_table::borrow_with_default(&store.usdt_users, account, &false)
+        } else if (token == b"RTX") {
+            *smart_table::borrow_with_default(&store.rtx_users, account, &false)
+        } else if (token == b"MOVE") {
+            *smart_table::borrow_with_default(&store.move_users, account, &false)
         } else {
             false
         }
