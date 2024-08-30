@@ -7,13 +7,10 @@ module Routex::RoutexV2 {
     use aptos_std::type_info::{type_name, struct_name, type_of};
     use aptos_framework::coin::{Self, Coin};
     use aptos_framework::event::emit;
-    use SwapDeployer::AnimeSwapPoolV1Library;
-    use SwapDeployer::AnimeSwapPoolV1;
-    use SwapDeployer::AnimeSwapPoolV2;
+    use razor::RazorSwapPool;
 
     // routers
-    const RoutexSwapV1: u16 = 1;
-    const RoutexSwapV2: u16 = 2;
+    const Razor: u16 = 1;
 
     // errors
     const ERR_INVALID_ROUTER: u64 = 1;
@@ -79,10 +76,8 @@ module Routex::RoutexV2 {
         router: u16,
         amount_in: u64,
     ): u64 {
-        if (router == RoutexSwapV1) {
-            AnimeSwapPoolV1::get_amounts_out_1_pair<X, Y>(amount_in)
-        } else if (router == RoutexSwapV2) {
-            AnimeSwapPoolV2::get_amounts_out_1_pair<X, Y>(amount_in)
+        if (router == Razor) {
+            RazorSwapPool::get_amounts_out_1_pair<X, Y>(amount_in)
         } else {
             abort ERR_INVALID_ROUTER
         }
@@ -92,10 +87,8 @@ module Routex::RoutexV2 {
         router: u16,
         coins_in: Coin<X>,
     ): Coin<Y> {
-        if (router == RoutexSwapV1) {
-            AnimeSwapPoolV1::swap_coins_for_coins<X, Y>(coins_in)
-        } else if (router == RoutexSwapV2) {
-            AnimeSwapPoolV2::swap_coins_for_coins<X, Y>(coins_in)
+        if (router == Razor) {
+            RazorSwapPool::swap_coins_for_coins<X, Y>(coins_in)
         } else {
             abort ERR_INVALID_ROUTER
         }
@@ -116,7 +109,7 @@ module Routex::RoutexV2 {
         coins_out = swap_coins_for_coins<X, Y>(router, coins_in);
         vector::push_back(&mut amounts, coin::value(&coins_out));
         assert!(coin::value(&coins_out) >= amount_out_min, ERR_INSUFFICIENT_OUTPUT_AMOUNT);
-        AnimeSwapPoolV1Library::register_coin<Y>(account);
+        register_coin<Y>(account);
         coin::deposit<Y>(signer::address_of(account), coins_out);
         let coin_types = vector::empty<String>();
         vector::push_back(&mut coin_types, type_name<X>());
@@ -148,7 +141,7 @@ module Routex::RoutexV2 {
         coins_out = swap_coins_for_coins<Y, Z>(*vector::borrow(&routers, 1), coins_mid);
         vector::push_back(&mut amounts, coin::value(&coins_out));
         assert!(coin::value(&coins_out) >= amount_out_min, ERR_INSUFFICIENT_OUTPUT_AMOUNT);
-        AnimeSwapPoolV1Library::register_coin<Z>(account);
+        register_coin<Z>(account);
         coin::deposit<Z>(signer::address_of(account), coins_out);
         let coin_types = vector::empty<String>();
         vector::push_back(&mut coin_types, type_name<X>());
@@ -184,7 +177,7 @@ module Routex::RoutexV2 {
         coins_out = swap_coins_for_coins<Z, W>(*vector::borrow(&routers, 2), coins_mid2);
         vector::push_back(&mut amounts, coin::value(&coins_out));
         assert!(coin::value(&coins_out) >= amount_out_min, ERR_INSUFFICIENT_OUTPUT_AMOUNT);
-        AnimeSwapPoolV1Library::register_coin<W>(account);
+        register_coin<W>(account);
         coin::deposit<W>(signer::address_of(account), coins_out);
         let coin_types = vector::empty<String>();
         vector::push_back(&mut coin_types, type_name<X>());
@@ -199,5 +192,15 @@ module Routex::RoutexV2 {
         };
         emit(event);
         record_user<X>(signer::address_of(account));
+    }
+
+    // register coin if not registered
+    public fun register_coin<CoinType>(
+        account: &signer
+    ) {
+        let account_addr = signer::address_of(account);
+        if (!coin::is_account_registered<CoinType>(account_addr)) {
+            coin::register<CoinType>(account);
+        };
     }
 }

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "demo": "ts-node src/demo.ts",
+    "demoV2": "ts-node src/demoV2.ts",
     "events": "ts-node src/events.ts"
   },
   "keywords": [],
